@@ -1,0 +1,1 @@
+I am excited to learn more about Git, GitHub, and software development practices through this course. My goal is to apply these skills to secure a job in the tech industry and contribute to impactful projects.
