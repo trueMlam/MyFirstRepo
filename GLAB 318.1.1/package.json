@@ -1,0 +1,12 @@
+{
+    "name": "glab-318.1.1",
+    "description": "test",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Ed",
+    "version": "1.0.0",
+    "keywords": [],
+    "license": "ISC"
+}
