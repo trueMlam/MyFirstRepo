@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 moviary. your movie journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+<div class="hdr-wrapper">
+<div class="hdr">
+<h1 id="title"><a href="#" style="text-decoration: none; color: inherit;">🎬 moviary.</a></h1>
+<p id="subt">your movie journal</p>
+</div>
+</div>
+<div class="search-bar">
+<div id="srch-box">
+<input id="srch-in" type="text" placeholder="🔍 search..">
+<button id="srch-btn" class="btn">find movies</button>
+</div>
+</div>
+</header>
+<main>
+<aside id="side">
+<div class="side-bar">
+<h2 id="folder-tit">my folders</h2>
+<ul id="f-list">
+<li class="f-item" data-folder="watch-later">⏳ watch later</li>
+<li class="f-item" data-folder="favs">❤️ favs</li>
+</ul>
+<button id="add-f-btn" class="btn">📁 add folder</button>
+</div>
+</aside>
+<section id="g-section">
+<div id="progress-bar"></div>
+<div id="gall"></div>
+</section>
+</main>
+<div id="msg" style="display: none; color: #ff6f61; text-align: center; margin-top: 10px;"></div>
+<script src="js/main.js" type="module"></script>
+</body>
+</html>

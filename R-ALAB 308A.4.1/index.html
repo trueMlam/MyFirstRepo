@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐱 cat breeds! 🌍</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🐾 explore cats 🐾</h1>
+    <p id="desc">pick a breed to learn more 😺</p>
+  </header>
+
+  <section id="sel-area">
+    <label for="breedSel">pick your breed 😻</label>
+    <select id="breedSel">
+      <option value="">--select--</option>
+    </select>
+  </section>
+
+  <button id="refreshBtn">🔄 refresh list</button>
+
+  <section id="infoSect">
+    <h2>about breed 🐈</h2>
+    <div id="infoDump">
+      <p>waiting for your choice.. 🕒</p>
+    </div>
+  </section>
+
+  <div id="progCont">
+    <div id="progBar"></div>
+  </div>
+
+  <footer>
+    <p class="ps-note">P.S. nothing says «classy design» like a touch of comic sans. it’s like the font equivalent of caviar 🍣</p>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
