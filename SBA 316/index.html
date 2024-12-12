@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASSWORD GENERATOR</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>PASSWORD GENERATOR</h1>
+        <p>fill out the form and click the button to generate passwords</p>
+    </header>
+    
+    <main>
+        <form id="pwform">
+            <fieldset>
+                <legend>generator settings</legend>
+                <label><input type="checkbox" id="nums"> numbers</label>
+                <label><input type="checkbox" id="upper"> uppercase</label>
+                <label><input type="checkbox" id="lower"> lowercase</label>
+                <label><input type="checkbox" id="syms"> symbols&emsp;[%, *, ), ?, @, #, $, ~]</label>
+
+                <label for="len">length:</label>
+                <input type="number" id="len" value="20" min="1" max="100">
+            </fieldset>
+
+            <div class="btn-container">
+                <button type="button" id="genbtn">GENERATE</button>
+            </div>
+        </form>
+
+        <section id="pwresult" class="hidden">
+            <br><h3>generated passwords</h3>
+            <ul id="pwlist"></ul>
+        </section>
+    </main>
+
+    <script src="js/index.js"></script>
+</body>
+</html>

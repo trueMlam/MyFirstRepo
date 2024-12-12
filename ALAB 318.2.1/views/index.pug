@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title= title
+  body
+    h1= msg
+    p= xtra
+    p more content
+    a(href='/user/Test') user page
+    form(action='/submit' method='POST')
+      input(type='text' name='inputData')
+      button(type='submit') submit
+    a(href='/download') download

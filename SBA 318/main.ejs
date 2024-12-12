@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮GameCue. Your Backlog</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1 class="title">🎮GameCue</h1>
+  <div id="typewriter" class="typewriter" style="margin-top:5px;"></div><br>
+
+  <div class="search-container">
+    <div class="input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="api-search-input" placeholder="games" style="color:white;">
+    </div>
+    <ul id="api-games" class="game-list"></ul>
+  </div>
+
+  <br><h2>Your Backlog</h2>
+  <div class="search-container">
+    <div class="input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="in your backlog" style="color:white;">
+    </div>
+  </div>
+
+  <div class="game-list">
+    <ul id="games">
+      <% if (games.length > 0) { %>
+        <% for (let i = 0; i < games.length; i++) { %>
+          <li class="game-item">
+            <div class="game-info">
+              <strong id="title-<%= i %>"><%= games[i].title %></strong>
+            </div>
+            <div class="game-details">
+              Date: <%= games[i].date %>, Genre: <%= games[i].genre || 'N/A' %>
+              <button class="edit-btn" onclick="editGame('<%= games[i].title %>', <%= i %>)">✏️ Edit</button>
+              <button class="delete-btn" onclick="deleteGame('<%= games[i].title %>')">🗑️ Delete</button>
+            </div>
+          </li>
+        <% } %>
+      <% } else { %>
+        <li>no games added yet</li>
+      <% } %>
+    </ul>
+  </div>
+
+  <script>
+    const gamesForTyping=["Animal Crossing","DOOM","Hotline Miami","Mario + Rabbids Kingdom Battle","Marvel's Spider-Man","Red Dead Redemption 2","Super Mario 3D Land","The Last of Us Part II","The Legend of Zelda","Until Dawn"];
+    let index=0,charIndex=0,typeSpeed=169,deleteSpeed=48,pauseTime=1313,isDeleting=false;
+
+    function typeWriter(){
+      const el=document.getElementById('typewriter');
+      if(!el)return;
+
+      if(index>=gamesForTyping.length)index=0;
+      const currentGame=gamesForTyping[index];
+
+      if(isDeleting){
+        el.textContent=currentGame.substring(0,charIndex--)+'|';
+        if(charIndex<0){
+          isDeleting=false;
+          index++;
+          setTimeout(typeWriter,typeSpeed);
+        }else{
+          setTimeout(typeWriter,deleteSpeed);
+        }
+      }else{
+        el.textContent=currentGame.substring(0,charIndex++)+'|';
+        if(charIndex>currentGame.length){
+          isDeleting=true;
+          setTimeout(typeWriter,pauseTime);
+        }else{
+          setTimeout(typeWriter,typeSpeed);
+        }
+      }
+    }
+    typeWriter();
+
+    document.getElementById('search-input').addEventListener('input',function(){
+      const query=this.value.toLowerCase();
+      const gameItems=document.querySelectorAll('.game-item');
+      gameItems.forEach(item=>{
+        const title=item.querySelector('strong').textContent.toLowerCase();
+        if(title.includes(query)){
+          item.style.display='';
+        }else{
+          item.style.display='none';
+        }
+      });
+    });
+
+    document.getElementById('api-search-input').addEventListener('input',function(){
+      const query=this.value;
+      if(query.length>2){
+        fetch(`https://api.rawg.io/api/games?key=fa842d56ce874b9897d70a41c964f1fe&search=${query}&page_size=10`)
+        .then(response=>response.json())
+        .then(data=>{
+          const gameList=document.getElementById('api-games');
+          gameList.innerHTML='';
+          if(data.results&&data.results.length>0){
+            data.results.forEach(game=>{
+              const listItem=document.createElement('li');
+              listItem.classList.add('game-item');
+              listItem.innerHTML=`${game.name} - Released: ${game.released}
+              <button class="add-btn" onclick="addGame('${game.name}','${game.released}','${game.genres&&game.genres[0]?game.genres[0].name:'N/A'}')">➕ Add</button>`;
+              gameList.appendChild(listItem);
+            });
+          }else{
+            gameList.innerHTML='<li>no games found via API</li>';
+          }
+        }).catch(err=>console.error('api error:',err));
+      }
+    });
+
+    function addGame(title,date,genre){
+      fetch('/games/add',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({title,date,genre})
+      }).then(response=>{
+        if(response.ok){
+          location.reload();
+        }else{
+          console.error('failed to add game');
+        }
+      }).catch(err=>console.error('error adding game:',err));
+    }
+
+    function editGame(oldTitle,index){
+      let newTitle=prompt('Enter the new title:',oldTitle);
+      if(newTitle){
+        newTitle=newTitle.trim();
+        if(newTitle&&newTitle!==oldTitle){
+          fetch(`/games/update/${oldTitle}`,{
+            method:'PATCH',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({newTitle})
+          }).then(response=>{
+            if(response.ok){
+              document.getElementById(`title-${index}`).textContent=newTitle;
+              console.log('game updated successfully');
+            }else{
+              console.error('failed to update game');
+            }
+          }).catch(err=>console.error('error updating game:',err));
+        }else{
+          console.log('invalid or duplicate title provided');
+        }
+      }
+    }
+
+    function deleteGame(title){
+      fetch(`/games/delete/${title}`,{method:'DELETE'}).then(()=>{location.reload();});
+    }
+  </script>
+</body>
+</html>
